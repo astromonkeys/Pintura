@@ -5,24 +5,26 @@ orders of business:
 3. add other elements/plan further
 */
 
-var cnv;
+//TODOs
+//maybe figure out how to prevent/work around screen clear on resize?
 
-function windowResized() {
-    resizeCanvas(windowWidth, windowHeight);
-}
+var canvas; // canvas
+
+function windowResized() { resizeCanvas(windowWidth, windowHeight); }
 
 function setup() {
-	cnv = createCanvas(windowWidth, windowHeight);
-	cnv.parent("container");
-    cnv.position(0,0);
-	background(0);
+  canvas = createCanvas(windowWidth, windowHeight);
+  //canvas.parent("container");
+  canvas.position(0, 0);
+  canvas.style('z-index', '-1');
+  background(200);
 }
 
 function draw() {
-    if (mouseIsPressed) {
-      fill(0);
-    } else {
-      fill(255);
-    }
-    ellipse(mouseX, mouseY, 80, 80);
+  if (mouseIsPressed) {
+    fill(0);
+  } else {
+    fill(255);
   }
+  ellipse(mouseX, mouseY, 80, 80);
+}
