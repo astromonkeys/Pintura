@@ -1,5 +1,5 @@
 /* Styles the p5.js sketch as the page background */
 canvas {
-  position: relative;
+  position: absolute;
   z-index: -3 !important;
 }

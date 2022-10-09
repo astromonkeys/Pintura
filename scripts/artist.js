@@ -5,12 +5,24 @@ orders of business:
 3. add other elements/plan further
 */
 
+var cnv;
+
+function windowResized() {
+    resizeCanvas(windowWidth, windowHeight);
+}
+
 function setup() {
-
-	var clientHeight = document.getElementById('container').clientHeight;
-	var clientWidth = document.getElementById('container').clientWidth;
-
-	var cnv = createCanvas(clientWidth, clientHeight);
+	cnv = createCanvas(windowWidth, windowHeight);
 	cnv.parent("container");
+    cnv.position(0,0);
 	background(0);
 }
+
+function draw() {
+    if (mouseIsPressed) {
+      fill(0);
+    } else {
+      fill(255);
+    }
+    ellipse(mouseX, mouseY, 80, 80);
+  }
