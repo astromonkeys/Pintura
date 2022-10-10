@@ -2,7 +2,8 @@
 let playing = false;
 
 window.onSpotifyWebPlaybackSDKReady = () => {
-    const token = 'BQCLC-W3cFhVHx4_LcMh1b6HPJVirsLNWL5mYdu2byaURQhaJMHO-6jThUdJCi96_MFvtgK6Bqc25iOdk221LbdAsKrJRIRKIutqXovYrvf1BqPTkStSfVhWEMfeznYzcp5xUPGyZ5AFz-bAoD6r5cEPKdGl3ZH1NRU8TX_S82pD4DispAzYRWwTRrHJ7dtT';
+    const token = api_key.TOKEN;
+    console.log(token);
     const player = new Spotify.Player({
         name: 'Pintura',
         getOAuthToken: cb => { cb(token); },
