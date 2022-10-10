@@ -1,0 +1,34 @@
+Add necessary icons from bootstrap icons folder you downloaded, ya dingus
+list so far(plus all '-fill' counterparts):
+
+clock
+calendar
+cloud
+cloud-drizzle
+cloud-fog
+cloud-lightning-rain
+cloud-rain
+cloud-snow
+cloud-sun
+gear
+geo-alt
+google
+github
+moon
+music-note
+music-note-beamed
+music-note-list
+music-player
+music-player-fill
+pause or pause-btn or pause-circle
+person or person-circle
+play or play-btn or play-circle
+skip-end or skip-end-btn or skip-end-circle 
+skip-start or skip-start-btn or skip-start-circle
+sliders
+spotify
+soundwave
+sun
+volume-down
+volume-mute
+volume-up 

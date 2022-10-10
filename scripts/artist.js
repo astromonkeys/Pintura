@@ -1,8 +1,8 @@
 /*
 orders of business:
-1. get generic animated p5.js sketch to function as the background
+1. get generic animated p5.js sketch to function as the background -> done!
 2. add some html element(s) on top of background, make sure everything's all good in the hood
-3. add other elements/plan further
+  - spotify web player, google search, weather
 */
 
 //TODOs
