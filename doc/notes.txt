@@ -1,0 +1,8 @@
+//
+
+Little design notes file, just for me to remember
+
+//
+
+- Using bootstrap instead of a framework like react since things need to be lightweight, as the background graphics will be a bit performance hungry
+    - plus, since there's only one page and minimal content that doesn't need sophisticated life cycle management
