@@ -8,6 +8,11 @@ orders of business:
 //TODOs
 //maybe figure out how to prevent/work around screen clear on resize?
 
+
+/*
+    This file handles all of the background art generation/display
+*/
+
 var canvas; // canvas
 
 function windowResized() { resizeCanvas(windowWidth, windowHeight); }

@@ -1,11 +1,15 @@
+/*
+    This file handles all music playback stuff, auth.js handles authorization work
+*/
+
+
 
 let playing = false;
 
 window.onSpotifyWebPlaybackSDKReady = () => {
-    const token = api_key.TOKEN;
-    console.log(token);
+    const token = access_token;
     const player = new Spotify.Player({
-        name: 'Pintura',
+        name: 'a',
         getOAuthToken: cb => { cb(token); },
         volume: 0.5
     });
@@ -39,3 +43,5 @@ window.onSpotifyWebPlaybackSDKReady = () => {
 
     player.connect();
 }
+
+

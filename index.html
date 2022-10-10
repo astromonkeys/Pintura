@@ -8,21 +8,23 @@
         <meta name="description" content="Pintura: a dynamic audiovisual homepage">
         <meta name="author" content="Noah Zurn">
         <title>Pintura</title>
-        <link rel="stylesheet" href="css/main.scss">
+        <link rel="stylesheet" href="src/css/main.scss">
 
         <!-- Scripts -->
         <script src="config/config.js"></script>
         <!--<script src="scripts/artist.js"></script>-->
-        <script src="scripts/flow.js"></script>
-        <script src="scripts/musician.js"></script>
+        <script src="src/js/auth.js"></script>
+        <script src="src/js/flow.js"></script>
+        <script src="src/js/musician.js"></script>
         <script src="libs/p5.js"></script>
-        <script src="https://sdk.scdn.co/spotify-player.js"></script>
+        <!--<script src="https://sdk.scdn.co/spotify-player.js"></script>-->
     </head>
 
-    <body>
+    <body onload="onPageLoad()"> <!-- this should be requestSpotifyAuthorization(), how to stop reloading? -->
         <section id="container">
             <p>Hello!</p>
-            <button id="togglePlay">Toggle Play</button>
+            <button id="auth" onclick="requestSpotifyAuthorization()">Authorize</button>
+            <button id="togglePlay">togglePlay</button>
         </section>
     </body>
 </main>
