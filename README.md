@@ -1,5 +1,5 @@
 
-Pintura: a dynamic audiovisual homepage
+Pintura: a dynamic audiovisual homepage.
 This project is not meant to be distributed, totally for me only but if you want to run it locally, go for it. should be fun
 
 ------------------------------------------------------------------

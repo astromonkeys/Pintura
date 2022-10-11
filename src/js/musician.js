@@ -2,12 +2,20 @@
     This file handles all music playback stuff, auth.js handles authorization work
 */
 
-
-
 let playing = false;
 
 window.onSpotifyWebPlaybackSDKReady = () => {
-    const token = access_token;
+
+    console.log("sdk ready");
+
+    let authorized = sessionStorage.getItem("authReceived");
+
+    if (authorized == 'false') {
+        console.log("here"); 
+        requestAuthorization();
+    }
+
+    const token = localStorage.getItem("access_token");
     const player = new Spotify.Player({
         name: 'a',
         getOAuthToken: cb => { cb(token); },

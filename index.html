@@ -17,14 +17,14 @@
         <script src="src/js/flow.js"></script>
         <script src="src/js/musician.js"></script>
         <script src="libs/p5.js"></script>
-        <!--<script src="https://sdk.scdn.co/spotify-player.js"></script>-->
+        <script src="https://sdk.scdn.co/spotify-player.js"></script>
     </head>
 
-    <body onload="onPageLoad()"> <!-- this should be requestSpotifyAuthorization(), how to stop reloading? -->
+    <body>
         <section id="container">
             <p>Hello!</p>
             <button id="auth" onclick="requestSpotifyAuthorization()">Authorize</button>
-            <button id="togglePlay">togglePlay</button>
+            <button id="togglePlay">toggle play</button>
         </section>
     </body>
 </main>

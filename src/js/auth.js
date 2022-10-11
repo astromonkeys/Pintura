@@ -2,16 +2,34 @@
 /* various api urls */
 
 //TODO change once app is actually deployed
-var spotifyRedirectURI = "http://127.0.0.1:5500/index.html"
-var access_token = null;
-var refresh_token = null;
+var spotifyRedirectURI = "http://127.0.0.1:5500/index.html";
+var authorizationReceived = false;
 
-const AUTHORIZE = "https://accounts.spotify.com/authorize"
+const AUTHORIZE = "https://accounts.spotify.com/authorize";
 const TOKEN = "https://accounts.spotify.com/api/token";
 
-/* Stuff that should be ready when the user can interact with the page*/
+
+window.onbeforeunload = function(){
+    sessionStorage.setItem("authReceived", false);
+ }
+
+/* Stuff that should be ready when the user can interact with the page */
 function onPageLoad() {
     if (window.location.search.length > 0) { handleRedirect(); }
+}
+
+function requestAuthorization() {
+    let url = AUTHORIZE;
+    url += "?client_id=" + api_key.CLIENT_ID;
+    url += "&response_type=code";
+    url += "&redirect_uri=" + encodeURI(spotifyRedirectURI);
+    url += "&show_dialog=false"; //set to false to skip auth screen
+    url += "&scope=user-read-private user-read-email user-modify-playback-state user-read-playback-position user-library-read streaming user-read-playback-state user-read-recently-played playlist-read-private";
+
+    sessionStorage.setItem("authReceived", true);
+    authorizationReceived = true;
+
+    window.location.href = url; // Show Spotify's authorization screen
 }
 
 function handleRedirect() {
@@ -35,18 +53,15 @@ function fetchAccessToken(code) {
     callAuthorizationApi(body);
 }
 
-function refreshAccessToken(){
+function refreshAccessToken() {
     refresh_token = localStorage.getItem("refresh_token");
     let body = "grant_type=refresh_token";
-    body += "&refresh_token=" + refresh_token;
+    body += "&refresh_token=" + localStorage.getItem("refresh_token");;
     body += "&client_id=" + api_key.CLIENT_ID;
     callAuthorizationApi(body);
 }
 
-function callAuthorizationApi(body){
-
-    /* TODO use fetch instead? */
-
+function callAuthorizationApi(body) {
     let xhr = new XMLHttpRequest();
     xhr.open("POST", TOKEN, true);
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
@@ -55,33 +70,24 @@ function callAuthorizationApi(body){
     xhr.onload = handleAuthorizationResponse;
 }
 
-function handleAuthorizationResponse(){
-    if ( this.status == 200 ){
-        // var data = JSON.parse(this.responseText);
-        // console.log(data);
+function handleAuthorizationResponse() {
+    console.log("herr");
+    if (this.status == 200) {
         var data = JSON.parse(this.responseText);
-        if ( data.access_token != undefined ){
-            access_token = data.access_token;
+        //console.log(data);
+        if (data.access_token != undefined) {
+            let access_token = data.access_token;
             localStorage.setItem("access_token", access_token); //saves with no expiration, use sessionStorage to delete when browser tab is closed
         }
-        if ( data.refresh_token  != undefined ){
-            refresh_token = data.refresh_token;
+        if (data.refresh_token != undefined) {
+            let refresh_token = data.refresh_token;
             localStorage.setItem("refresh_token", refresh_token);
         }
+        
         onPageLoad();
     }
     else { //display error message
         console.log(this.responseText);
         alert(this.responseText);
     }
-}
-
-function requestSpotifyAuthorization() {
-    let url = AUTHORIZE;
-    url += "?client_id=" + api_key.CLIENT_ID;
-    url += "&response_type=code";
-    url += "&redirect_uri=" + encodeURI(spotifyRedirectURI);
-    url += "&show_dialog=false"; //set to false to skip auth screen
-    url += "&scope=user-read-private user-read-email user-modify-playback-state user-read-playback-position user-library-read streaming user-read-playback-state user-read-recently-played playlist-read-private";
-    window.location.href = url; // Show Spotify's authorization screen
 }
