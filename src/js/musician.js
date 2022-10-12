@@ -2,6 +2,8 @@
     This file handles all music playback stuff, auth.js handles authorization/token getting workload
 */
 
+window.onbeforeunload = () => { closePlayer(); }
+
 function configurePlayer() {
     // Ready
     musician.addListener('ready', ({ device_id }) => {
@@ -31,5 +33,9 @@ function configurePlayer() {
     };
 
     musician.connect();
+}
+
+function closePlayer() {
+    musician.disconnect();
 }
 

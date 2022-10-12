@@ -4,6 +4,12 @@ Little design notes file, just for me to remember
 
 //
 
+TODOs:
+1. figure out refresh tokens/when to ask for them, not urgent
+2. add a google search bar widget, next task
+3. design the spotify player widget & code it
+4. implement more advanced spotify music playing functionality, once 3 is done
+
 - Using bootstrap instead of a framework like react since things need to be lightweight, as the background graphics will be a bit performance hungry
     - plus, since there's only one page and minimal content that doesn't need sophisticated life cycle management
 
@@ -13,4 +19,4 @@ Little design notes file, just for me to remember
     - after auth flow has completed, wait until that boolean is true, then initialize web player with the token we got
         - this should typically be already ready to go once the auth flow is done, or a very short delay thereafter so it's probably(..?) fine
 
-- p5.js has a print function defined!
+- p5.js has a print function defined! nice
