@@ -4,6 +4,8 @@ This project is not meant to be distributed, totally for me only but if you want
 
 This app relies on the p5.js library, as well as bootstrap. 
 Either add these libraries into "/libs" at the root of the project structure to run it locally, or use these urls instead of the hard-coded filepaths:
+
+----
         p5.js:
             <script src="https://cdn.jsdelivr.net/npm/p5@1.4.2/lib/p5.js"></script>
         Bootstrap:
