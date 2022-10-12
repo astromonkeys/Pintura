@@ -12,24 +12,32 @@ let playing = false; // is the player playing?
 var sdkReady = false; // TODO maybe put this in session storage so we don't re-auth on page reload?
 var musician;
 
-window.onSpotifyWebPlaybackSDKReady = () => { sdkReady = true; }
+window.onSpotifyWebPlaybackSDKReady = () => { print("DEBUG: Spotify Web Playback SDK ready"); sdkReady = true; }
 
-/* Stuff that should be ready when the user can interact with the page */
 function onPageLoad() {
-    if (window.location.search.length > 0) { handleRedirect(); }
-    if (localStorage.getItem("access token") != null && localStorage.getItem("refresh token") != null) {
-        // these might be invalid... not sure until we test -> how to handle?
-        startWebPlayer(); // should only be called once the player is ready and shouldn't cause a refresh loop
+    if (window.location.search.length > 0) { // do we have the code in the URL?
+        let code = getCodefromURL();
+        fetchAccessToken(code);
+        while (!sdkReady) { }
+        // need to make sure tokens are good to go before starting the web player
+        startWebPlayer();
+        // trim URL without page reload
+        window.history.replaceState(null, null, window.location.pathname);
     }
+    else requestAuthorization();
 }
 
 function startWebPlayer() {
     const token = localStorage.getItem("access_token");
+    print(token);
+    console.log("player starting");
+    // TODO if there isn't a player save it to local storage then load the player from that each time instead of making a new one
     musician = new Spotify.Player({
-        name: 'a',
+        name: '1',
         getOAuthToken: cb => { cb(token); },
         volume: 0.5
     });
+    configurePlayer();
 }
 
 function requestAuthorization() {
@@ -40,18 +48,20 @@ function requestAuthorization() {
     url += "&show_dialog=false"; //set to false to skip auth screen
     url += "&scope=user-read-private user-read-email user-modify-playback-state user-read-playback-position user-library-read streaming user-read-playback-state user-read-recently-played playlist-read-private";
 
+    console.log("redirect");
+
     window.location.href = url; // Show Spotify's authorization screen
 }
 
-function handleRedirect() {
+function getCodefromURL() {
     let code = null;
     const queryString = window.location.search; // this string is everything including and after '?' past the actual url
     if (queryString.length > 0) {
         const urlParams = new URLSearchParams(queryString);
         code = urlParams.get('code')
     }
-    fetchAccessToken(code);
-    window.history.pushState("", "", spotifyRedirectURI); // remove param from url
+
+    return code;
 }
 
 /* uses our auth code to fetch the actual access token we use for the api */
@@ -64,6 +74,7 @@ function fetchAccessToken(code) {
     callAuthorizationApi(body);
 }
 
+/* TODO figure out where to call this... haven't run into an issue yet but will eventually */
 function refreshAccessToken() {
     refresh_token = localStorage.getItem("refresh_token");
     let body = "grant_type=refresh_token";
@@ -82,7 +93,6 @@ function callAuthorizationApi(body) {
 }
 
 function handleAuthorizationResponse() {
-    console.log("herr");
     if (this.status == 200) {
         var data = JSON.parse(this.responseText);
         //console.log(data);
@@ -95,7 +105,7 @@ function handleAuthorizationResponse() {
             localStorage.setItem("refresh_token", refresh_token);
         }
 
-        onPageLoad();
+        //onPageLoad();
     }
     else { //display error message
         console.log(this.responseText);

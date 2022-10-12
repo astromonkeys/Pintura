@@ -12,3 +12,5 @@ Little design notes file, just for me to remember
     - in the background, the playback sdk will set a boolean to true when it's ready
     - after auth flow has completed, wait until that boolean is true, then initialize web player with the token we got
         - this should typically be already ready to go once the auth flow is done, or a very short delay thereafter so it's probably(..?) fine
+
+- p5.js has a print function defined!
