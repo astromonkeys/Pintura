@@ -3,19 +3,33 @@
 
 //TODO change once app is actually deployed
 var spotifyRedirectURI = "http://127.0.0.1:5500/index.html";
-var authorizationReceived = false;
 
 const AUTHORIZE = "https://accounts.spotify.com/authorize";
 const TOKEN = "https://accounts.spotify.com/api/token";
 
+let playing = false; // is the player playing?
 
-window.onbeforeunload = function(){
-    sessionStorage.setItem("authReceived", false);
- }
+var sdkReady = false; // TODO maybe put this in session storage so we don't re-auth on page reload?
+var musician;
+
+window.onSpotifyWebPlaybackSDKReady = () => { sdkReady = true; }
 
 /* Stuff that should be ready when the user can interact with the page */
 function onPageLoad() {
     if (window.location.search.length > 0) { handleRedirect(); }
+    if (localStorage.getItem("access token") != null && localStorage.getItem("refresh token") != null) {
+        // these might be invalid... not sure until we test -> how to handle?
+        startWebPlayer(); // should only be called once the player is ready and shouldn't cause a refresh loop
+    }
+}
+
+function startWebPlayer() {
+    const token = localStorage.getItem("access_token");
+    musician = new Spotify.Player({
+        name: 'a',
+        getOAuthToken: cb => { cb(token); },
+        volume: 0.5
+    });
 }
 
 function requestAuthorization() {
@@ -25,9 +39,6 @@ function requestAuthorization() {
     url += "&redirect_uri=" + encodeURI(spotifyRedirectURI);
     url += "&show_dialog=false"; //set to false to skip auth screen
     url += "&scope=user-read-private user-read-email user-modify-playback-state user-read-playback-position user-library-read streaming user-read-playback-state user-read-recently-played playlist-read-private";
-
-    sessionStorage.setItem("authReceived", true);
-    authorizationReceived = true;
 
     window.location.href = url; // Show Spotify's authorization screen
 }
@@ -83,7 +94,7 @@ function handleAuthorizationResponse() {
             let refresh_token = data.refresh_token;
             localStorage.setItem("refresh_token", refresh_token);
         }
-        
+
         onPageLoad();
     }
     else { //display error message
