@@ -16,6 +16,7 @@
         <script src="src/js/auth.js"></script>
         <script src="src/js/flow.js"></script>
         <script src="src/js/musician.js"></script>
+        <script src="src/js/search_engine.js"></script>
         <script src="libs/p5.js"></script>
         <script src="https://sdk.scdn.co/spotify-player.js"></script>
     </head>
@@ -23,8 +24,15 @@
     <body onload="onPageLoad()">
         <section id="container">
             <p>Hello!</p>
+            <input type="text" id="search box">Search with Google</input>
+            <button id="google_query" onclick="search()">Search</button>
             <button id="togglePlay">toggle play</button>
         </section>
+        <!-- play around with this to render search results
+            <script async src="https://cse.google.com/cse.js?cx=6372d402929ca4da2">
+</script>
+<div class="gcse-search"></div>
+        -->
     </body>
 </main>
 

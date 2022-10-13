@@ -12,6 +12,7 @@ TODOs:
 
 - Using bootstrap instead of a framework like react since things need to be lightweight, as the background graphics will be a bit performance hungry
     - plus, since there's only one page and minimal content that doesn't need sophisticated life cycle management
+    - Maaaaaaaybe switch to react since component capability makes sense here
 
 - New auth flow:
     - call auth functions to get token and trigger page refresh
