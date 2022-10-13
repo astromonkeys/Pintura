@@ -2,7 +2,9 @@
 Pintura: a dynamic audiovisual homepage.
 This project is not meant to be distributed, totally for me only but if you want to run it locally, go for it. should be fun
 
-This app relies on the p5.js library, as well as bootstrap. 
+All the svg icons I used are included in my project directory. This may be annoying if you want to use your own icons/buttons... sorry
+
+Also, this app relies on the p5.js library, as well as bootstrap. 
 Either add these libraries into "/libs" at the root of the project structure to run it locally, or use these urls instead of the hard-coded filepaths:
 
 ----

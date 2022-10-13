@@ -27,15 +27,30 @@ function configurePlayer() {
         console.error(message);
     });
 
-    document.getElementById('togglePlay').onclick = function () {
-        musician.togglePlay();
-        playing = !playing;
-    };
+    // document.getElementById('togglePlay').onclick = function () {
+    //     musician.togglePlay();
+    //     playing = !playing;
+    // };
 
     musician.connect();
+
 }
 
 function closePlayer() {
     musician.disconnect();
 }
+
+/* some ui stuff */
+
+function changeButtonImg(event) {
+    console.log(event.target.childNodes[0].src);
+    // TODO figure out how to programmatically change the src string to what I want
+//     if (event.type == "mouseenter") {
+//         event.target.childNodes[0].src = event.target.childNodes[0].src 
+//     } else if (event.type == "mouseleave") {
+//         event.target.childNodes[0].src = 
+//     }
+}
+
+
 
