@@ -7,12 +7,12 @@ window.onbeforeunload = () => { closePlayer(); }
 function configurePlayer() {
     // Ready
     musician.addListener('ready', ({ device_id }) => {
-        console.log('Spotify player ready with Device ID', device_id);
+        console.log('DEBUG: Spotify player ready with Device ID', device_id);
     });
 
     // Not Ready
     musician.addListener('not_ready', ({ device_id }) => {
-        console.log('Device ID has gone offline', device_id);
+        console.log('DEBUG: Device ID has gone offline', device_id);
     });
 
     musician.addListener('initialization_error', ({ message }) => {
