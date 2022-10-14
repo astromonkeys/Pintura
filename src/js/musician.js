@@ -42,14 +42,50 @@ function closePlayer() {
 
 /* some ui stuff */
 
+img_paths = {
+    RW: "assets/icons/rw.svg",
+    RW_FILL: "assets/icons/rw-fill.svg",
+    FF: "assets/icons/ff.svg",
+    FF_FILL: "assets/icons/ff-fill.svg",
+    PLAY: "assets/icons/play.svg",
+    PLAY_FILL: "assets/icons/play-fill.svg"
+}
+
+/* might not be the best way to do this, but oh well */
 function changeButtonImg(event) {
-    console.log(event.target.childNodes[0].src);
-    // TODO figure out how to programmatically change the src string to what I want
-//     if (event.type == "mouseenter") {
-//         event.target.childNodes[0].src = event.target.childNodes[0].src 
-//     } else if (event.type == "mouseleave") {
-//         event.target.childNodes[0].src = 
-//     }
+    let currImgSrc = event.target.childNodes[0].src.split('Pintura/')[1];
+
+    if (event.type == "mouseenter") {
+        switch (currImgSrc) {
+            case img_paths.RW:
+                currImgSrc = img_paths.RW_FILL;
+                break;
+            case img_paths.PLAY:
+                currImgSrc = img_paths.PLAY_FILL;
+                break;
+            case img_paths.FF:
+                currImgSrc = img_paths.FF_FILL;
+                break;
+            default:
+                console.log("default");
+            // do nothing
+        }
+    } else if (event.type == "mouseleave") {
+        switch (currImgSrc) {
+            case img_paths.RW_FILL:
+                currImgSrc = img_paths.RW;
+                break;
+            case img_paths.PLAY_FILL:
+                currImgSrc = img_paths.PLAY;
+                break;
+            case img_paths.FF_FILL:
+                currImgSrc = img_paths.FF;
+                break;
+            default:
+            // do nothing
+        }
+    }
+    event.target.childNodes[0].src = currImgSrc;
 }
 
 

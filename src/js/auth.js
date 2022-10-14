@@ -29,7 +29,7 @@ function onPageLoad() {
 
 function startWebPlayer() {
     const token = localStorage.getItem("access_token");
-    print("DEBUG: Spotify Web Player starting");
+    console.log("DEBUG: Spotify Web Player starting");
     musician = new Spotify.Player({
         name: 'Pintura',
         getOAuthToken: cb => { cb(token); },

@@ -11,7 +11,7 @@ TODOs:
 - implement more advanced spotify music playing functionality, once player is made
 - make google search bar look nicer (https://programmablesearchengine.google.com/controlpanel/lookandfeel?cx=6372d402929ca4da2)
 - use (s)css to get the layout of the page how I want it
-- add fun stuff like animations n shadows n shit
+- add fun stuff like animations n shadows n shit, definitely play around with the classes bootstrap offers in your html elements
 
 - Using bootstrap instead of a framework like react since things need to be lightweight, as the background graphics will be a bit performance hungry
     - plus, since there's only one page and minimal content that doesn't need sophisticated life cycle management
