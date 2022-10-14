@@ -4,6 +4,8 @@
 
 window.onbeforeunload = () => { closePlayer(); }
 
+var spotify;
+
 function configurePlayer() {
     // Ready
     musician.addListener('ready', ({ device_id }) => {
@@ -27,10 +29,16 @@ function configurePlayer() {
         console.error(message);
     });
 
-    // document.getElementById('togglePlay').onclick = function () {
-    //     musician.togglePlay();
-    //     playing = !playing;
-    // };
+    document.getElementById('play').onclick = function () {
+        musician.togglePlay();
+        playing = !playing;
+        // TODO change button icon/filling/color
+    };
+
+    // TODO set up web api wrapper and add placeholder album artwork
+    spotify = new SpotifyWebApi();
+    spotify.setAccessToken(localStorage.getItem("access token"));
+    console.log(spotify);
 
     musician.connect();
 
@@ -85,6 +93,7 @@ function changeButtonImg(event) {
             // do nothing
         }
     }
+    // TODO handle icon change on button click? -> later
     event.target.childNodes[0].src = currImgSrc;
 }
 

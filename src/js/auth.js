@@ -24,7 +24,7 @@ function onPageLoad() {
         // trim URL without page reload
         window.history.replaceState(null, null, window.location.pathname);
     }
-    else requestAuthorization();
+    else requestAuthorization
 }
 
 function startWebPlayer() {
