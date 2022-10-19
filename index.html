@@ -42,28 +42,39 @@
 
         <!-- spotify player, made from a bootstrap card (: -->
         <div class="container">
-            <div class="card mb-3" style="max-width: 540px;">
+            <div class="card mb-3 text-center" style="max-width: 540px;">
                 <div class="row g-0">
                     <div class="col-md-4">
-                        <img class="img-fluid rounded-start">
+                        <img id="album_art" class="img-fluid rounded-start"
+                            style="vertical-align: middle; padding: 1rem 1rem;">
                     </div>
                     <div class="col-md-8">
                         <div class="card-body">
-                            <h5 class="card-title">Now playing: _playlist name_</playlist>
-                            </h5>
+
+                            <br>
+                            <div class="d-flex justify-content-evenly position-relative">
+                                <h5 id="nowPlaying" class="card-title">Now playing: _playlist name_</h5>
+                                <div class="btn-group dropend">
+                                    <button type="button" class="btn btn-link" data-bs-toggle="dropdown" aria-expanded="false"><img
+                                            src="icons/search.svg"></button>
+                                    <ul class="dropdown-menu" id="playlistSelect">
+                                        <!-- playlists added programmatically -->
+                                    </ul>
+                                </div>
+                            </div>
                             <p class="card-text">Song title</p>
                             <p class="card-text">Artist name</p>
                             <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
                             <div class="btn-group" role="group" aria-label="Basic outlined example">
                                 <button id="rewindbtn" class="btn btn-outline-primary"
                                     onmouseenter="changeButtonImg(event)" onmouseleave="changeButtonImg(event)"
-                                    type="button"><img src="assets/icons/rw.svg" id="rewind"></button>
+                                    type="button"><img src="/icons/rw.svg" id="rewind"></button>
                                 <button type="button" class="btn btn-outline-primary"
                                     onmouseenter="changeButtonImg(event)" onmouseleave="changeButtonImg(event)"
-                                    type="button"><img src="assets/icons/play.svg" id="play"></button>
+                                    type="button"><img src="/icons/play.svg" id="playpause"></button>
                                 <button type="button" class="btn btn-outline-primary"
                                     onmouseenter="changeButtonImg(event)" onmouseleave="changeButtonImg(event)"
-                                    type="button"><img src="assets/icons/ff.svg" id="forward"></button>
+                                    type="button"><img src="/icons/ff.svg" id="forward"></button>
                             </div>
                         </div>
                     </div>

@@ -24,7 +24,7 @@ function onPageLoad() {
         // trim URL without page reload
         window.history.replaceState(null, null, window.location.pathname);
     }
-    else requestAuthorization
+    else requestAuthorization();
 }
 
 function startWebPlayer() {
@@ -41,7 +41,7 @@ function startWebPlayer() {
 
 function requestAuthorization() {
     let url = AUTHORIZE;
-    url += "?client_id=" + api_key.CLIENT_ID;
+    url += "?client_id=" + secrets.CLIENT_ID;
     url += "&response_type=code";
     url += "&redirect_uri=" + encodeURI(spotifyRedirectURI);
     url += "&show_dialog=false"; //set to false to skip auth screen
@@ -68,8 +68,8 @@ function fetchAccessToken(code) {
     let body = "grant_type=authorization_code";
     body += "&code=" + code;
     body += "&redirect_uri=" + encodeURI(spotifyRedirectURI);
-    body += "&client_id=" + api_key.CLIENT_ID;
-    body += "&client_secret=" + api_key.CLIENT_SECRET;
+    body += "&client_id=" + secrets.CLIENT_ID;
+    body += "&client_secret=" + secrets.CLIENT_SECRET;
     callAuthorizationApi(body);
 }
 
@@ -78,7 +78,7 @@ function refreshAccessToken() {
     refresh_token = localStorage.getItem("refresh_token");
     let body = "grant_type=refresh_token";
     body += "&refresh_token=" + localStorage.getItem("refresh_token");;
-    body += "&client_id=" + api_key.CLIENT_ID;
+    body += "&client_id=" + secrets.CLIENT_ID;
     callAuthorizationApi(body);
 }
 
@@ -86,7 +86,7 @@ function callAuthorizationApi(body) {
     let xhr = new XMLHttpRequest();
     xhr.open("POST", TOKEN, true);
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    xhr.setRequestHeader('Authorization', 'Basic ' + btoa(api_key.CLIENT_ID + ":" + api_key.CLIENT_SECRET));
+    xhr.setRequestHeader('Authorization', 'Basic ' + btoa(secrets.CLIENT_ID + ":" + secrets.CLIENT_SECRET));
     xhr.send(body);
     xhr.onload = handleAuthorizationResponse;
 }

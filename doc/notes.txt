@@ -12,6 +12,10 @@ TODOs:
 - use (s)css to get the layout of the page how I want it
 - add fun stuff like animations n shadows n shit, definitely play around with the classes bootstrap offers in your html elements
 - figure out refresh tokens/when to ask for them, not urgent
+- more robust playlist searching, ability to search for songs too
+
+// KNOWN BUGS:
+- playlist selection sometimes yields an undefined and fails
 
 - Using bootstrap instead of a framework like react since things need to be lightweight, as the background graphics will be a bit performance hungry
     - plus, since there's only one page and minimal content that doesn't need sophisticated life cycle management
