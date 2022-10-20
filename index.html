@@ -16,6 +16,7 @@
         <script src="src/js/auth.js"></script>
         <script src="src/js/flow.js"></script>
         <script src="src/js/musician.js"></script>
+        <script src="src/js/ui.js"></script>
 
         <!-- Libs -->
         <script src="libs/p5.js"></script>
@@ -42,44 +43,45 @@
 
         <!-- spotify player, made from a bootstrap card (: -->
         <div class="container">
-            <div class="card mb-3 text-center" style="max-width: 540px;">
+            <div class="card mb-3 text-bg-dark text-center" style="max-width: 540px;">
                 <div class="row g-0">
                     <div class="col-md-4">
                         <img id="album_art" class="img-fluid rounded-start"
                             style="vertical-align: middle; padding: 1rem 1rem;">
                     </div>
                     <div class="col-md-8">
-                        <div class="card-body">
+                        <div class="card-body text-center">
+                            <div class="btn-group dropend" style="position: absolute;
+                                top: 0px;
+                                right: 0px;">
+                                <button type="button" class="btn btn-link" data-bs-toggle="dropdown"
+                                    aria-expanded="false"><img src="icons/search.svg"></button>
+                                <ul class="dropdown-menu dropdown-menu-dark" overflow="scroll" id="playlistSelect">
+                                    <!-- playlists added programmatically -->
+                                </ul>
+                            </div>
+                            <h6>Now playing from: </h6>
+                            <h5 id="nowPlaying">nothing!</h5>
+                            <div class="justify-content-evenly d-flex text-center">
 
-                            <br>
-                            <div class="d-flex justify-content-evenly position-relative">
-                                <h5 id="nowPlaying" class="card-title">Now playing: _playlist name_</h5>
-                                <div class="btn-group dropend">
-                                    <button type="button" class="btn btn-link" data-bs-toggle="dropdown" aria-expanded="false"><img
-                                            src="icons/search.svg"></button>
-                                    <ul class="dropdown-menu" id="playlistSelect">
-                                        <!-- playlists added programmatically -->
-                                    </ul>
-                                </div>
                             </div>
-                            <p class="card-text">Song title</p>
-                            <p class="card-text">Artist name</p>
-                            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-                            <div class="btn-group" role="group" aria-label="Basic outlined example">
-                                <button id="rewindbtn" class="btn btn-outline-primary"
-                                    onmouseenter="changeButtonImg(event)" onmouseleave="changeButtonImg(event)"
-                                    type="button"><img src="/icons/rw.svg" id="rewind"></button>
-                                <button type="button" class="btn btn-outline-primary"
-                                    onmouseenter="changeButtonImg(event)" onmouseleave="changeButtonImg(event)"
-                                    type="button"><img src="/icons/play.svg" id="playpause"></button>
-                                <button type="button" class="btn btn-outline-primary"
-                                    onmouseenter="changeButtonImg(event)" onmouseleave="changeButtonImg(event)"
-                                    type="button"><img src="/icons/ff.svg" id="forward"></button>
-                            </div>
+
+                        </div>
+                        <p class="card-text">Song title</p>
+                        <p class="card-text">Artist name</p>
+                        <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                        <div class="btn-group" role="group" aria-label="Basic outlined example">
+                            <button id="rewindbtn" class="btn btn-link" type="button"><img src="/icons/rw.svg"
+                                    id="rewind"></button>
+                            <button id="playpausebtn" type="button" class="btn btn-link" type="button"><img src="/icons/play.svg"
+                                    id="playpause"></button>
+                            <button id="forwardbtn" type="button" class="btn btn-link" type="button"><img src="/icons/ff.svg"
+                                    id="forward"></button>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
         </div>
 
         <section id="container">

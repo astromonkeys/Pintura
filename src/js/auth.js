@@ -7,12 +7,10 @@ var spotifyRedirectURI = "http://127.0.0.1:5500/index.html";
 const AUTHORIZE = "https://accounts.spotify.com/authorize";
 const TOKEN = "https://accounts.spotify.com/api/token";
 
-let playing = false; // is the player playing?
-
 var sdkReady = false; // currently, we re-auth on page reload and while this isn't a problem it's not necessary... maybe fix eventually
 var musician;
 
-window.onSpotifyWebPlaybackSDKReady = () => { print("DEBUG: Spotify Web Playback SDK ready"); sdkReady = true; }
+window.onSpotifyWebPlaybackSDKReady = () => { console.debug("Spotify Web Playback SDK ready"); sdkReady = true; }
 
 function onPageLoad() {
     if (window.location.search.length > 0) { // do we have the code in the URL?
@@ -29,7 +27,7 @@ function onPageLoad() {
 
 function startWebPlayer() {
     const token = localStorage.getItem("access_token");
-    console.log("DEBUG: Spotify Web Player starting");
+    console.debug("Spotify Web Player starting");
     musician = new Spotify.Player({
         name: 'Pintura',
         getOAuthToken: cb => { cb(token); },
