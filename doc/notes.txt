@@ -17,6 +17,10 @@ bigger TODOs:
 // misc TODOs:
 - fix shuffle api call
 - fix not removing our device when the window closes
+- when skipping a song, the UI update is one song behind -> some smaller related bugs in the ui
+- some of my api calls may be unnecessary(ie getting entire track when I just need album artwork, etc.)
+- implement scrubbing with the song progress bar
+- make icons more sophisticated/colorful
 
 // KNOWN BUGS:
 - playlist selection sometimes yields an undefined and fails

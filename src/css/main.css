@@ -3,3 +3,13 @@ canvas {
   position: absolute;
   z-index: -1 !important;
 }
+
+.progress-bar {
+  color: aquamarine;
+  width: 0%;
+}
+
+.progress {
+  width: 50%;
+  margin: auto;
+}
