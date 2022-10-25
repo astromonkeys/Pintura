@@ -19,6 +19,7 @@ bigger TODOs:
 - implement scrubbing with the song progress bar
 - make icons more sophisticated/colorful -> maybe use different svg library
 - maybe save the state of the UI so on a refresh we can use that and it doesn't go to a blank slate
+- play button icon is still wonky, maybe fix eventually cause it's weird but mostly works, has the same problem as the shuffle/repeat buttons of multiple places changing the icon
 
 // KNOWN BUGS:
 - playlist selection sometimes yields an undefined and fails

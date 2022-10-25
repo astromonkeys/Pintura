@@ -31,8 +31,7 @@ function configurePlayer() {
         console.debug('Spotify player ready with Device ID', device_id);
         pinturaDevice = device_id;
         // probably a better way to do this, but no listener exists afaik
-        setInterval(checkSongChange, POLL_SONG_CHANGE);
-        updatePlaybackProgress();
+        setInterval(setPlaybackState, POLL_SONG_CHANGE);
     });
 
     // Not Ready

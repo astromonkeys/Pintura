@@ -3,9 +3,10 @@
 const MS_SKIP_SEEK = 5000; // if you're more than this amount of time through the song, the rewind button will function as a seek to beginning instead of skip to prev song
 
 var playing;
-var currentTrack;
+var currentTrack = { uri: '' };
 var shuffleState = 0; // 0 = off/white image, 1 = on/dark image
 var repeatState = 0; // 0 = off/white image, 1 = context mode, 2 = track mode
+var progressPct;
 
 img_paths = {
     RW: "/icons/rw.svg",
@@ -21,23 +22,46 @@ img_paths = {
     REPEAT_TRACK: "/icons/repeat-1.svg",
 }
 
-function checkSongChange() {
-    //console.debug("Checking for song change");
-    spotify.getMyCurrentPlayingTrack({}, (errorObject, data) => {
-        if (currentTrack.uri != data.item.uri) {
-            setPlaybackState();
-        }
-    });
+function updateButtonStates(data) {
+    /* update button icons based on play/paused, shuffling, etc. */
+    //console.log(data);
+    if (data.is_playing) {
+        document.getElementById("playpausebtn").childNodes[0].src = img_paths.PAUSE;
+        playing = true;
+    } else {
+        document.getElementById("playpausebtn").childNodes[0].src = img_paths.PLAY;
+        playing = false;
+    }
 
-    // TODO update shuffle, play/pause, and repeat icons
+    if (data.shuffle_state) document.getElementById("shuffle_img").style.filter = "invert(0%)";
+    else document.getElementById("shuffle_img").style.filter = "invert(100%)";
 
-    updatePlaybackProgress();
+    switch (data.repeat_state) {
+        case "off":
+            document.getElementById("repeat").src = img_paths.REPEAT;
+            document.getElementById("repeat").style.filter = "invert(100%)";
+            break;
+        case "context":
+            document.getElementById("repeat").style.filter = "invert(0%)";
+            break;
+        case "track":
+            document.getElementById("repeat").style.filter = "invert(0%)";
+            document.getElementById("repeat").src = img_paths.REPEAT_TRACK;
+            break;
+        default:
+            console.debug("Invalid repeat state");
+            break;
+    }
 }
 
 function updatePlaybackProgress() {
     spotify.getMyCurrentPlayingTrack({}, (errorObject, data) => {
-        let progressPct = data.progress_ms / data.item.duration_ms * 100;
-        document.getElementById("playback-progress").style.width = progressPct + "%";
+        try {
+            progressPct = data.progress_ms / data.item.duration_ms * 100;
+            document.getElementById("playback-progress").style.width = progressPct + "%";
+        } catch (error) {
+            logApiResponse(error);
+        }
     });
 }
 
@@ -45,73 +69,54 @@ function setPlaybackState() {
     spotify.getMyCurrentPlaybackState({}, (errorObject, data) => {
         // logApiResponse(errorObject, data);
 
-        currentTrack = data.item;
-        document.getElementById("songTitle").innerHTML = currentTrack.name;
+        if (currentTrack.uri != data.item.uri) {
+            // update track/artist/etc info
+            currentTrack = data.item;
+            document.getElementById("songTitle").innerHTML = currentTrack.name;
 
-        let artistStr = "";
-        for (let i = 0; i < data.item.artists.length; i++) {
-            artistStr = artistStr.concat(data.item.artists[i].name, ", ");
-        }
-        artistStr = artistStr.substring(0, artistStr.length - 2);
-        document.getElementById("artistName").innerHTML = artistStr;
+            let artistStr = "";
+            for (let i = 0; i < data.item.artists.length; i++) {
+                artistStr = artistStr.concat(data.item.artists[i].name, ", ");
+            }
+            artistStr = artistStr.substring(0, artistStr.length - 2);
+            document.getElementById("artistName").innerHTML = artistStr;
 
-        document.getElementById("album_art").src = data.item.album.images[0].url;
+            document.getElementById("album_art").src = data.item.album.images[0].url;
 
-        // update the "now playing from" field
-        if (data.context != null) {
-            let nowPlaying = "";
-            let id = data.context.uri.split(":")[2];
-            switch (data.context.type) {
-                // in each case, get the name
-                case "playlist":
-                    spotify.getPlaylist(id, {}, function (errorObject, data) {
-                        document.getElementById("nowPlaying").innerHTML = data.name;
-                    });
-                    break;
-                case "artist":
-                    spotify.getArtist(id, {}, function (errorObject, data) {
-                        document.getElementById("nowPlaying").innerHTML = data.name;
-                    });
-                    break;
-                case "album":
-                    spotify.getAlbum(id, {}, function (errorObject, data) {
-                        document.getElementById("nowPlaying").innerHTML = data.name;
-                    });
-                    break;
-                default:
-                    console.debug("unrecognized media type");
-                    break;
+            // update the "now playing from" field
+            if (data.context != null) {
+                let nowPlaying = "";
+                let id = data.context.uri.split(":")[2];
+                switch (data.context.type) {
+                    // in each case, get the name
+                    case "playlist":
+                        spotify.getPlaylist(id, {}, function (errorObject, data) {
+                            document.getElementById("nowPlaying").innerHTML = data.name;
+                        });
+                        break;
+                    case "artist":
+                        spotify.getArtist(id, {}, function (errorObject, data) {
+                            document.getElementById("nowPlaying").innerHTML = data.name;
+                        });
+                        break;
+                    case "album":
+                        spotify.getAlbum(id, {}, function (errorObject, data) {
+                            document.getElementById("nowPlaying").innerHTML = data.name;
+                        });
+                        break;
+                    case "collection":
+                        document.getElementById("nowPlaying").innerHTML = "Liked songs";
+                        break;
+                    default:
+                        document.getElementById("nowPlaying").innerHTML = "Your library";
+                        break;
+                }
             }
         }
 
-        /* update button icons based on play/paused, shuffling, etc. */
-        if (data.is_playing) {
-            document.getElementById("playpausebtn").childNodes[0].src = img_paths.PAUSE;
-            playing = true;
-        } else {
-            document.getElementById("playpausebtn").childNodes[0].src = img_paths.PLAY;
-            playing = false;
-        }
-
-        if (data.shuffle_state) shuffleState = 1;
-        else shuffleState = 0;
-
-        switch (data.repeat_state) {
-            case "off":
-                break;
-            case "context":
-                repeatState = 1;
-                break;
-            case "track":
-                repeatState = 2;
-                break;
-            default:
-                console.debug("Invalid repeat state");
-                break;
-        }
-
-        checkShuffle();
-        checkRepeat();
+        // update buttons/playback progressbar
+        updateButtonStates(data);
+        updatePlaybackProgress();
     });
 }
 
@@ -157,7 +162,7 @@ function makeButtonsWork() {
     let r = document.getElementById("rewindbtn");
     r.addEventListener("click", () => {
         // skip song backward
-        console.debug("skipping song backward");
+        //console.debug("skipping song backward");
         handleSeekSkip();
         setPlaybackState();
     });
@@ -173,7 +178,7 @@ function makeButtonsWork() {
     let f = document.getElementById("forwardbtn");
     f.addEventListener("click", () => {
         // skip song forward
-        console.debug("skipping song foward");
+        //console.debug("skipping song foward");
         spotify.skipToNext({}, (errorObject, data) => {
             logApiResponse(errorObject, data);
         });
@@ -189,10 +194,10 @@ function makeButtonsWork() {
     });
 
     let sh = document.getElementById("shufflebtn");
-    sh.addEventListener("click", checkShuffle);
+    sh.addEventListener("click", setShuffleMode);
 
     let re = document.getElementById("repeatbtn");
-    re.addEventListener("click", checkRepeat);
+    re.addEventListener("click", setRepeatMode);
 }
 
 function handleSeekSkip() {
@@ -211,46 +216,41 @@ function handleSeekSkip() {
     });
 }
 
-// TODO add api calls to these functions
-function checkShuffle() {
+
+/* let updateButtonStates handle UI change */
+function setShuffleMode() {
     let doShuffle = false;
-    if (shuffleState == 0) {
-        // shuffle is now off
-        document.getElementById("shuffle_img").style.filter = "invert(100%)";
-        shuffleState = 1;
-    } else {
+    if (shuffleState == 1) {
         // shuffle is now on
         doShuffle = true;
-        document.getElementById("shuffle_img").style.filter = "invert(0%)";
         shuffleState = 0;
+    } else {
+        // shuffle is now off
+        shuffleState = 1;
     }
+
     spotify.setShuffle(doShuffle, {}, (errorObject, data) => {
         //logApiResponse(errorObject, data);
     });
 }
 
 
-function checkRepeat() {
+function setRepeatMode() {
     let doRepeat = "";
     switch (repeatState) {
         case 0:
             // repeat is now off
             doRepeat = "off";
-            document.getElementById("repeat").src = img_paths.REPEAT;
-            document.getElementById("repeat").style.filter = "invert(100%)";
             repeatState = 1;
             break;
         case 1:
             // context repeat is now on
             doRepeat = "context";
-            document.getElementById("repeat").style.filter = "invert(0%)";
             repeatState = 2;
             break;
         case 2:
             // track repeat is now on
             doRepeat = "track";
-            document.getElementById("repeat").style.filter = "invert(0%)";
-            document.getElementById("repeat").src = img_paths.REPEAT_TRACK;
             repeatState = 0;
             break;
         default:
