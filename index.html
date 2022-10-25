@@ -37,18 +37,18 @@
         <!-- search bar -->
 
         <script async src="https://cse.google.com/cse.js?cx=6372d402929ca4da2"></script>
-        <div class="gcse-search" id="" searchBar></div>
-
+        <div style="border-radius: 10px;">
+            <div class="gcse-search" id="searchBar"></div>
+        </div>
         <br>
 
         <!-- spotify player, made from a bootstrap card (: -->
-        <div class="container">
+        <div id="spotify-widget">
             <div class="card mb-3 text-bg-dark text-center" style="max-width: 540px;">
                 <div class="row g-0">
                     <!-- left half(album art) -->
-                    <div class="col-md-4">
-                        <img id="album_art" class="img-fluid rounded-start"
-                            style="vertical-align: middle; padding: 1rem 1rem;">
+                    <div class="col-md-4" id="art-container">
+                        <img id="album_art" class="img-thumbnail" style="vertical-align: middle;">
                     </div>
                     <!-- right half -->
                     <div class="col-md-8">
@@ -76,9 +76,9 @@
 
                         <!-- progress bar -->
                         <div class="progress" style="height: 3px;">
-                            <div class="progress-bar" style="color: aquamarine" role="progressbar"
-                                id="playback-progress" aria-label="playback-progress" aria-valuenow="25"
-                                aria-valuemin="0" aria-valuemax="100"></div>
+                            <div class="progress-bar bg-danger" role="progressbar" id="playback-progress"
+                                aria-label="playback-progress" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+                            </div>
                         </div>
 
                         <div class="btn-group" role="group" aria-label="Basic outlined example">
@@ -98,7 +98,6 @@
                     </div>
                 </div>
             </div>
-        </div>
         </div>
 
         <!-- play around with this to render search results

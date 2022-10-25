@@ -5,11 +5,38 @@ canvas {
 }
 
 .progress-bar {
-  color: aquamarine;
   width: 0%;
 }
 
 .progress {
   width: 50%;
   margin: auto;
+}
+
+#spotify-widget {
+  display: -webkit-flex;
+  display: flex;
+  -webkit-align-items: center;
+  align-items: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+}
+
+#art-container {
+  display: flex;
+  align-items: center;
+  padding-right: 1rem;
+  padding-left: 1rem;
+}
+
+#searchBar {
+  padding-top: 3rem;
+  width: 50%;
+  margin: 0 auto;
+}
+
+.gsc-control-cse {
+  border-radius: 10px;
+  border: 0px;
+  padding-bottom: 5px;
 }

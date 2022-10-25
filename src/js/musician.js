@@ -3,25 +3,22 @@
 */
 
 // not sure if either of these work
-window.onbeforeunload = () => { musician.disconnect(); }
-window.onclose = () => { musician.disconnect(); }
+window.onbeforeunload = () => { disconnectDevices(); }
+
+const POLL_SONG_CHANGE = 500; // ms between poll for song change
 
 var spotify;
 var userPlaylists = [];
 var currentPlaylist = ""; // [name, uri, image url]
 var pinturaDevice;
 
+
 function configurePlayer() {
     // Ready
-
+    
     // set up web api wrapper
     spotify = new SpotifyWebApi();
     spotify.setAccessToken(localStorage.getItem("access_token"));
-
-    // TODO allow searching, selecting, and playing of user's playlists - the only music functionality I'm going to make for now
-    // - make play/pause, rewind and skip buttons do their jobs
-    // - update album artwork and song/artist names on song change
-    // - add song progress bar -> add scrubbing later
 
     // retrieve current playlist/song/artist name on startup
     setPlaybackState();
@@ -34,7 +31,7 @@ function configurePlayer() {
         console.debug('Spotify player ready with Device ID', device_id);
         pinturaDevice = device_id;
         // probably a better way to do this, but no listener exists afaik
-        setInterval(checkSongChange, 750);
+        setInterval(checkSongChange, POLL_SONG_CHANGE);
         updatePlaybackProgress();
     });
 
@@ -62,7 +59,7 @@ function configurePlayer() {
 
 /* don't need to do anything with the data, just for debugging purposes */
 function logApiResponse(errorObject, data) {
-    if (errorObject != null) console.error(errorObject);
+    if (errorObject != null) console.error(errorObject.message);
     else console.debug(data);
 }
 
@@ -110,4 +107,17 @@ function getMyPlaylists() {
         }
     });
 
+}
+
+function disconnectDevices() {
+    musician.disconnect();
+
+    spotify.getMyDevices((errorObject, data) => {
+        for (device of data.devices) {
+            if (device.is_active == false && device.name == "Pintura") {
+                // deletes the device by attempting to link to it
+                spotify.transferMyPlayback(device.id, {}, (errorObject, data) => {});
+            }
+        }
+    });
 }

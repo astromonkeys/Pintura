@@ -29,6 +29,8 @@ function checkSongChange() {
         }
     });
 
+    // TODO update shuffle, play/pause, and repeat icons
+
     updatePlaybackProgress();
 }
 
@@ -186,7 +188,6 @@ function makeButtonsWork() {
         f.childNodes[0].src = img_paths.FF;
     });
 
-    // TODO make these icons(all icons, but these for starters) more sophisticated/colorful
     let sh = document.getElementById("shufflebtn");
     sh.addEventListener("click", checkShuffle);
 
@@ -212,36 +213,42 @@ function handleSeekSkip() {
 
 // TODO add api calls to these functions
 function checkShuffle() {
+    let doShuffle = false;
     if (shuffleState == 0) {
         // shuffle is now off
-        //spotify.setShuffle(true, { device_id: pinturaDevice }, function (errorObject, data) {
-        //    logApiResponse(errorObject, data);
-        //});
         document.getElementById("shuffle_img").style.filter = "invert(100%)";
         shuffleState = 1;
     } else {
         // shuffle is now on
+        doShuffle = true;
         document.getElementById("shuffle_img").style.filter = "invert(0%)";
         shuffleState = 0;
     }
+    spotify.setShuffle(doShuffle, {}, (errorObject, data) => {
+        //logApiResponse(errorObject, data);
+    });
 }
 
 
 function checkRepeat() {
+    let doRepeat = "";
     switch (repeatState) {
         case 0:
             // repeat is now off
+            doRepeat = "off";
             document.getElementById("repeat").src = img_paths.REPEAT;
             document.getElementById("repeat").style.filter = "invert(100%)";
             repeatState = 1;
             break;
         case 1:
             // context repeat is now on
+            doRepeat = "context";
             document.getElementById("repeat").style.filter = "invert(0%)";
             repeatState = 2;
             break;
         case 2:
             // track repeat is now on
+            doRepeat = "track";
             document.getElementById("repeat").style.filter = "invert(0%)";
             document.getElementById("repeat").src = img_paths.REPEAT_TRACK;
             repeatState = 0;
@@ -250,4 +257,7 @@ function checkRepeat() {
             console.debug("Invalid repeat state");
             break;
     }
+    spotify.setRepeat(doRepeat, {}, (errorObject, data) => {
+        //logApiResponse(errorObject, data);
+    });
 }
