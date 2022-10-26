@@ -1,0 +1,4 @@
+Notes for my art generation process (mostly so I don't forget):
+
+- Want to incoporate domain warping as well as fractal noise
+- goal for now is something like water caustics with multiple colors and movement
