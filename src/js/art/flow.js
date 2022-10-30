@@ -2,47 +2,100 @@
       a barebones animated example for testing
 */
 
+/*
+end goal: get a perlin noise color field based on a gradient -> lerpcolor and domain warp it
+*/
+
 var canvas; //canvas, this global is ok
 
 var zoom = 0.01; // how zoomed in are we, lower is more zoomed in
-var animSpeed = 0.005; // speed of our "slice's" movement, higher is faster (0.005 is pretty smooth)
+var animSpeed = 0.005; // speed of our "slice's" movement, higher is faster (0.005 is pretty smooth), this is what we will use the song's tempo to vary
 var zoff = 0; // controls varying the 2d plane over time, taking "slices" of 3d space
 var scl = 25; // how big is one box/vector in terms of pixels
 var cols, rows;
 var noiseScl = .01;
+
+var colorOff = 0;
+var colorInc = 0.00001;
+var colorScl = .01;
+
+var one;
+var two;
+
+var numItems;
+
 var fr;
 
 
 function setup() {
-  createCanvas(800, 800);
+  createCanvas(400, 400);
+  colorMode(RGB);
+  pixelDensity(1);
+  one = color(251, 99, 118);
+  two = color(10, 205, 255);
   background(255);
-  cols = 60;
-  rows = 60;
+  noStroke();
+  numItems = rows * cols;
   fr = createP('');
-  //noLoop();
+  noLoop();
 }
 
 /* good start! this should be made a lot faster... should run at least 30 fps in the browser */
 function draw() {
   background(255);
+
+  loadPixels();
+
+
   var xoff = 0;
-  for (let x = 0; x < cols; x++) {
+  for (let x = 0; x < width; x++) {
     var yoff = 0;
-    for (let y = 0; y < rows; y++) {
-      let xpos = x * 10;
-      let ypos = y * 10;
-      let dp = domainWarp(xoff, yoff, zoff);
-      fill(0);
-      ellipse(xpos + dp[0], ypos + dp[1], 3, 3);
+    for (let y = 0; y < height; y++) {
+      let pixelIndex = (x + y * width) * 4;
+
+
+      // get fill color
+      let fillColor = lerpColor(one, two, noise(xoff, yoff, colorOff));
+      pixels[pixelIndex + 0] = fillColor.levels[0]; // r
+      pixels[pixelIndex + 1] = fillColor.levels[1]; // g
+      pixels[pixelIndex + 2] = fillColor.levels[2]; // b
+      pixels[pixelIndex + 3] = fillColor.levels[3]; // a (255)
+
+      //fill(fillColor);
+      //ellipse(xpos + dp[0]+200, ypos + dp[1]+200, 10, 10);
       yoff += zoom;
+      //colorOff += colorInc;
     }
     xoff += zoom;
   }
   zoff += animSpeed;
 
+  updatePixels();
   fr.html(floor(frameRate()));
 }
 
+// old code
+//let xpos = x * 10;
+//let ypos = y * 10;
+//let dp = domainWarp(xoff, yoff, zoff);
+//let dp = [0,0];
+//fill(fillColor);
+//ellipse(xpos + dp[0]+200, ypos + dp[1]+200, 10, 10);
+//yoff += zoom;
+//colorOff += colorInc;
+
+// starter code
+// var xoff = 0;
+//   for (let x = 0; x < cols; x++) {
+//     var yoff = 0;
+//     for (let y = 0; y < rows; y++) {
+//       yoff += zoom;
+//     }
+//     xoff += zoom;
+//   }
+//   zoff += animSpeed;
+
+// garbage (I think)
 
 // var inc = 1;
 // var scl = 200;

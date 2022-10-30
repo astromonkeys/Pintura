@@ -43,6 +43,8 @@ bigger TODOs:
 
 - customize google search bar: https://programmablesearchengine.google.com/controlpanel/lookandfeel?cx=6372d402929ca4da2
 
+- the resources available to me are kinda limited, since everything is run client side (can't use a server, since it's being hosted on the cs department machines), especially the p5 sketch
+
 <body onload="onPageLoad()">
     
 
