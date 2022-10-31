@@ -28,11 +28,11 @@ var fr;
 
 
 function setup() {
-  createCanvas(400, 400);
+  createCanvas(800, 800);
   colorMode(RGB);
   pixelDensity(1);
-  one = color(251, 99, 118);
-  two = color(10, 205, 255);
+  one = color(0, 59, 54);
+  two = color(167, 201, 87);
   background(255);
   noStroke();
   numItems = rows * cols;
@@ -55,7 +55,9 @@ function draw() {
 
 
       // get fill color
-      let fillColor = lerpColor(one, two, noise(xoff, yoff, colorOff));
+      //let noiseVal = fractal(xoff, yoff, 1, 5); // replace 1 with zoff for animated
+      let noiseVal = noise(xoff, yoff, zoff);
+      let fillColor = lerpColor(one, two, noiseVal);
       pixels[pixelIndex + 0] = fillColor.levels[0]; // r
       pixels[pixelIndex + 1] = fillColor.levels[1]; // g
       pixels[pixelIndex + 2] = fillColor.levels[2]; // b
@@ -64,7 +66,7 @@ function draw() {
       //fill(fillColor);
       //ellipse(xpos + dp[0]+200, ypos + dp[1]+200, 10, 10);
       yoff += zoom;
-      //colorOff += colorInc;
+      colorOff += colorInc;
     }
     xoff += zoom;
   }

@@ -2,3 +2,10 @@ Notes for my art generation process (mostly so I don't forget):
 
 - Want to incoporate domain warping as well as fractal noise
 - goal for now is something like water caustics with multiple colors and movement
+
+- the resources available to me are kinda limited, since everything is run client side (can't use a server, since it's being hosted on the cs department machines), especially the p5 sketch
+    - maybe someday I'll make a domain-warped fractal noise animation... not the right sketch for this project.
+    - New idea: blobs floating around the screen stacked on top of each other
+    - each blob is a random, smooth, and animated shape(bezier maybe?)
+    - color of each blob is chosen from a smooth gradient/palette based on noise
+    - move blobs around in a flow field

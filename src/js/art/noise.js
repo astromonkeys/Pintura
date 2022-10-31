@@ -7,7 +7,7 @@
 var frequency = 1; // also kinda how zoomed in we are
 var amplitude = 1; // adjustment/multiplier for noise values, 1 is normal
 var roughness = 2; // affects frequency at higher octaves
-var persistence = 0.5; // affects amplitude in higher octaves
+var persistence = 0.5; // affects amplitude in higher octaves, higher is more effect at higher octaves
 var octaves = 3;
 
 var warpStrength = 100;
