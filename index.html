@@ -8,36 +8,103 @@
         <meta name="description" content="Pintura: a dynamic audiovisual homepage">
         <meta name="author" content="Noah Zurn">
         <title>Pintura</title>
+        <link rel="icon" href="icons/icon.jpg" type="image/jpg">
         <link rel="stylesheet" href="src/css/main.css" type="text/css">
 
         <!-- My code -->
-        <!-- <script src="config/config.js"></script> -->
-        <!-- <script src="scripts/artist.js"></script> -->
-        <!-- <script src="src/js/auth.js"></script>
-        
-        <!-- <script src="src/js/musician.js"></script>
-        <script src="src/js/ui.js"></script> --> 
-        <script src="src/js/art/bloblablah.js"></script>
-        <script src="src/js/art/noise.js"></script>
+        <script src="config/config.js"></script>
+        <script src="src/js/auth.js"></script>
+
+        <script src="src/js/musician.js"></script>
+        <script src="src/js/ui.js"></script>
+        <script src="src/js/art/artist.js"></script>
+        <!-- <script src="src/js/art/noise.js"></script> -->
 
         <!-- Libs -->
         <script src="libs/p5.js"></script>
         <!-- Spotify web player -->
-        <!-- <script src="https://sdk.scdn.co/spotify-player.js"></script> -->
+        <script src="https://sdk.scdn.co/spotify-player.js"></script>
         <!--- Spotify API wrapper -->
-        <!-- <script src="libs/spotify-web-api.js"></script>
+        <script src="libs/spotify-web-api.js"></script>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
             integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
-            crossorigin="anonymous"></script> -->
+            crossorigin="anonymous"></script>
 
     </head>
 
-    <body>
-        
+    <body onload="onPageLoad()">
+
+
+        <!-- search bar -->
+        <script async src="https://cse.google.com/cse.js?cx=6372d402929ca4da2"></script>
+        <div style="border-radius: 10px;">
+            <div class="gcse-search" id="searchBar"></div>
+        </div>
+
+        <br>
+
+        <!-- spotify player, made from a bootstrap card (: -->
+        <div id="spotify-widget">
+            <div class="card mb-3 text-bg-dark text-center" style="max-width: 540px;">
+                <div class="row g-0">
+                    <!-- left half (album art) -->
+                    <div class="col-md-4" id="art-container">
+                        <img id="album_art" class="img-thumbnail" style="vertical-align: middle;">
+                    </div>
+                    <!-- right half (everything else)-->
+                    <div class="col-md-8">
+                        <div class="card-body text-center">
+                            <div class="btn-group dropend" style="position: absolute;
+                                top: 0px;
+                                right: 0px;">
+                                <button type="button" class="btn btn-link" data-bs-toggle="dropdown"
+                                    aria-expanded="false"><img style="filter: invert(100%)"
+                                        src="icons/search.svg"></button>
+                                <ul class="dropdown-menu dropdown-menu-dark" overflow="scroll" id="playlistSelect">
+                                    <!-- playlists added programmatically -->
+                                </ul>
+                            </div>
+                            <h6>Now playing from: </h6>
+                            <h5 id="nowPlaying">Your library</h5>
+                            <div class="justify-content-evenly d-flex text-center">
+
+                            </div>
+
+                        </div>
+                        <!-- song and artist info -->
+                        <h6 id="songTitle" class="card-text"></h6>
+                        <p id="artistName" class="card-text"></p>
+
+                        <!-- progress bar -->
+                        <div class="progress" style="height: 3px;">
+                            <div class="progress-bar bg-danger" role="progressbar" id="playback-progress"
+                                aria-label="playback-progress" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+                            </div>
+                        </div>
+
+                        <!-- music control buttons -->
+                        <div class="btn-group" role="group" aria-label="Basic outlined example">
+                            <button id="shufflebtn" type="button" class="btn btn-link" type="button"><img
+                                    class="img-responsive" style="filter: invert(100%)" src="/icons/shuffle.svg"
+                                    id="shuffle_img"></button>
+                            <button id="rewindbtn" class="btn btn-link" type="button"><img style="filter: invert(100%)"
+                                    src="/icons/rw.svg" id="rewind"></button>
+                            <button id="playpausebtn" type="button" class="btn btn-link" type="button"><img
+                                    style="filter: invert(100%)" src="/icons/play.svg" id="playpause"></button>
+                            <button id="forwardbtn" type="button" class="btn btn-link" type="button"><img
+                                    style="filter: invert(100%)" src="/icons/ff.svg" id="forward"></button>
+                            <button id="repeatbtn" type="button" class="btn btn-link" type="button"><img
+                                    class="img-responsive" style="filter: invert(100%)" src="/icons/repeat.svg"
+                                    id="repeat"></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </body>
-    
+
 </main>
 
 </html>
