@@ -67,56 +67,59 @@ function updatePlaybackProgress() {
 
 function setPlaybackState() {
     spotify.getMyCurrentPlaybackState({}, (errorObject, data) => {
-        // logApiResponse(errorObject, data);
+        if (data != null && data != "") {
+            if (currentTrack.uri != data.item.uri) {
+                // update track/artist/etc info
 
-        if (currentTrack.uri != data.item.uri) {
-            // update track/artist/etc info
-            currentTrack = data.item;
-            document.getElementById("songTitle").innerHTML = currentTrack.name;
+                // update album art and p5 sketch
+                document.getElementById("album_art").src = data.item.album.images[0].url;
+                updateSketchColors();
 
-            let artistStr = "";
-            for (let i = 0; i < data.item.artists.length; i++) {
-                artistStr = artistStr.concat(data.item.artists[i].name, ", ");
-            }
-            artistStr = artistStr.substring(0, artistStr.length - 2);
-            document.getElementById("artistName").innerHTML = artistStr;
+                currentTrack = data.item;
+                document.getElementById("songTitle").innerHTML = currentTrack.name;
 
-            document.getElementById("album_art").src = data.item.album.images[0].url;
+                let artistStr = "";
+                for (let i = 0; i < data.item.artists.length; i++) {
+                    artistStr = artistStr.concat(data.item.artists[i].name, ", ");
+                }
+                artistStr = artistStr.substring(0, artistStr.length - 2);
+                document.getElementById("artistName").innerHTML = artistStr;
 
-            // update the "now playing from" field
-            if (data.context != null) {
-                let nowPlaying = "";
-                let id = data.context.uri.split(":")[2];
-                switch (data.context.type) {
-                    // in each case, get the name
-                    case "playlist":
-                        spotify.getPlaylist(id, {}, function (errorObject, data) {
-                            document.getElementById("nowPlaying").innerHTML = data.name;
-                        });
-                        break;
-                    case "artist":
-                        spotify.getArtist(id, {}, function (errorObject, data) {
-                            document.getElementById("nowPlaying").innerHTML = data.name;
-                        });
-                        break;
-                    case "album":
-                        spotify.getAlbum(id, {}, function (errorObject, data) {
-                            document.getElementById("nowPlaying").innerHTML = data.name;
-                        });
-                        break;
-                    case "collection":
-                        document.getElementById("nowPlaying").innerHTML = "Liked songs";
-                        break;
-                    default:
-                        document.getElementById("nowPlaying").innerHTML = "Your library";
-                        break;
+                // update the "now playing from" field
+                if (data.context != null) {
+                    let nowPlaying = "";
+                    let id = data.context.uri.split(":")[2];
+                    switch (data.context.type) {
+                        // in each case, get the name
+                        case "playlist":
+                            spotify.getPlaylist(id, {}, function (errorObject, data) {
+                                document.getElementById("nowPlaying").innerHTML = data.name;
+                            });
+                            break;
+                        case "artist":
+                            spotify.getArtist(id, {}, function (errorObject, data) {
+                                document.getElementById("nowPlaying").innerHTML = data.name;
+                            });
+                            break;
+                        case "album":
+                            spotify.getAlbum(id, {}, function (errorObject, data) {
+                                document.getElementById("nowPlaying").innerHTML = data.name;
+                            });
+                            break;
+                        case "collection":
+                            document.getElementById("nowPlaying").innerHTML = "Liked songs";
+                            break;
+                        default:
+                            document.getElementById("nowPlaying").innerHTML = "Your library";
+                            break;
+                    }
                 }
             }
-        }
 
-        // update buttons/playback progressbar
-        updateButtonStates(data);
-        updatePlaybackProgress();
+            // update buttons/playback progressbar
+            updateButtonStates(data);
+            updatePlaybackProgress();
+        }
     });
 }
 

@@ -14,6 +14,8 @@ function windowResized() {
 
 var canvas; // canvas
 
+var palette; // colors
+
 var fr;
 
 let cpOffsetAngle;
@@ -32,7 +34,7 @@ let color1;
 let color2;
 
 let bgNoise = 0;
-let bgInc = 0.01;
+let bgInc = 0.005;
 
 function setup() {
     canvas = createCanvas(windowWidth, windowHeight);
@@ -40,7 +42,7 @@ function setup() {
     canvas.style('z-index', '-1');
     color1 = color(248, 51, 60);
     color2 = color(252, 171, 16);
-    generateBlobs()
+    generateBlobs();
 }
 
 
@@ -148,6 +150,14 @@ function getBlob(seed, numPoints, baseRadius, radiusRandomness) {
     }
 
     return blobPoints;
+}
+
+function updateSketchColors() {
+    // get spotify song data
+
+    // somehow use it to get/generate a color palette?
+
+    // use these colors when generating blobs
 }
 
 /* Yeah I know javascript isn't object oriented, this is just easier. sue me */

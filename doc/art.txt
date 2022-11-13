@@ -9,3 +9,4 @@ Notes for my art generation process (mostly so I don't forget):
     - each blob is a random, smooth, and animated shape(bezier maybe?)
     - color of each blob is chosen from a smooth gradient/palette based on noise
     - move blobs around in a flow field
+    - **** get color palette of blobs from song data

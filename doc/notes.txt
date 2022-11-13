@@ -5,8 +5,7 @@ Little design notes file, just for me to remember
 //
 
 bigger TODOs:
-- add p5.js sketch! make it look good
-    - this will prob take a while and almost be a separate project by itself
+- add support for a login/other spotify users
 - add basic weather widget
 - implement more advanced spotify music playing functionality(searching, browsing the user's library, etc.)
 - add fun stuff like animations n shadows n shit, definitely play around with the classes bootstrap offers in your html elements
