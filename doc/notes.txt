@@ -18,7 +18,6 @@ bigger TODOs:
 - implement scrubbing with the song progress bar
 - make icons more sophisticated/colorful -> maybe use different svg library
 - maybe save the state of the UI so on a refresh we can use that and it doesn't go to a blank slate
-- play button icon is still wonky, maybe fix eventually cause it's weird but mostly works, has the same problem as the shuffle/repeat buttons of multiple places changing the icon
 - multiple p5 sketches, give the user the option to choose between styles or dynamically select style(flow fields vs rectangle packing, etc)
     - ambient blobs (do first)
     - smoking (take advantage of slowness and unveil the sketch as its generated and the song progresses)

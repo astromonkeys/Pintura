@@ -59,7 +59,7 @@ function configurePlayer() {
 /* don't need to do anything with the data, just for debugging purposes */
 function logApiResponse(errorObject, data) {
     if (errorObject != null) console.error(errorObject.message);
-    else console.debug(data);
+    else if(data) console.debug(data);
 }
 
 function playPlaylist(uri) {

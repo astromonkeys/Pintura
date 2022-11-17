@@ -154,7 +154,16 @@ function getBlob(seed, numPoints, baseRadius, radiusRandomness) {
 
 function updateSketchColors() {
     // get spotify song data
+    if (!currentTrack.id) return;
 
+    spotify.getAudioFeaturesForTrack(currentTrack.id, (errorObject, data) => {
+        // extract relevant features
+        let acousticness = data.acousticness; // more muted colors
+        let upbeatness = (data.danceability + data.energy) / 2;
+        let valence = data.valence;
+        let tempo = data.tempo;
+        let duration_ms = data.duration_ms;
+    });
     // somehow use it to get/generate a color palette?
 
     // use these colors when generating blobs

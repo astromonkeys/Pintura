@@ -7,6 +7,7 @@ var currentTrack = { uri: '' };
 var shuffleState = 0; // 0 = off/white image, 1 = on/dark image
 var repeatState = 0; // 0 = off/white image, 1 = context mode, 2 = track mode
 var progressPct;
+var playpausemouse = false;
 
 img_paths = {
     RW: "/icons/rw.svg",
@@ -24,12 +25,15 @@ img_paths = {
 
 function updateButtonStates(data) {
     /* update button icons based on play/paused, shuffling, etc. */
-    //console.log(data);
+
     if (data.is_playing) {
-        document.getElementById("playpausebtn").childNodes[0].src = img_paths.PAUSE;
+        if (playpausemouse) document.getElementById("playpausebtn").childNodes[0].src = img_paths.PAUSE_FILL;
+        else document.getElementById("playpausebtn").childNodes[0].src = img_paths.PAUSE;
         playing = true;
     } else {
-        document.getElementById("playpausebtn").childNodes[0].src = img_paths.PLAY;
+        if (playpausemouse) document.getElementById("playpausebtn").childNodes[0].src = img_paths.PLAY_FILL;
+        else document.getElementById("playpausebtn").childNodes[0].src = img_paths.PLAY;
+
         playing = false;
     }
 
@@ -54,15 +58,9 @@ function updateButtonStates(data) {
     }
 }
 
-function updatePlaybackProgress() {
-    spotify.getMyCurrentPlayingTrack({}, (errorObject, data) => {
-        try {
-            progressPct = data.progress_ms / data.item.duration_ms * 100;
-            document.getElementById("playback-progress").style.width = progressPct + "%";
-        } catch (error) {
-            logApiResponse(error);
-        }
-    });
+function updatePlaybackProgress(data) {
+    progressPct = data.progress_ms / data.item.duration_ms * 100;
+    document.getElementById("playback-progress").style.width = progressPct + "%";
 }
 
 function setPlaybackState() {
@@ -114,11 +112,10 @@ function setPlaybackState() {
                             break;
                     }
                 }
+                // update buttons/playback progressbar
+                updateButtonStates(data);
+                updatePlaybackProgress(data);
             }
-
-            // update buttons/playback progressbar
-            updateButtonStates(data);
-            updatePlaybackProgress();
         }
     });
 }
@@ -144,6 +141,8 @@ function makeButtonsWork() {
     b.addEventListener("mouseenter", () => {
         // change image
         /* THIS WILL NEED TO BE CHANGED AFTER DEPLOYMENT */
+        playpausemouse = true;
+
         let path = b.childNodes[0].src.split('5500')[1];
 
         if (path == img_paths.PLAY) path = img_paths.PLAY_FILL;
@@ -154,6 +153,8 @@ function makeButtonsWork() {
     b.addEventListener("mouseleave", () => {
         // change image
         /* THIS WILL NEED TO BE CHANGED AFTER DEPLOYMENT */
+        playpausemouse = false;
+
         let path = b.childNodes[0].src.split('5500')[1];
 
         if (path == img_paths.PLAY_FILL) path = img_paths.PLAY;
