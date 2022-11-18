@@ -71,9 +71,10 @@ function setPlaybackState() {
 
                 // update album art and p5 sketch
                 document.getElementById("album_art").src = data.item.album.images[0].url;
-                updateSketchColors();
 
                 currentTrack = data.item;
+                updateSketchColors();
+
                 document.getElementById("songTitle").innerHTML = currentTrack.name;
 
                 let artistStr = "";
@@ -114,8 +115,8 @@ function setPlaybackState() {
                 }
                 // update buttons/playback progressbar
                 updateButtonStates(data);
-                updatePlaybackProgress(data);
             }
+            updatePlaybackProgress(data);
         }
     });
 }

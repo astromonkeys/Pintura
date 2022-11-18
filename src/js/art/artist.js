@@ -5,6 +5,10 @@
 
 /* This file handles all of the background art generation/display */
 
+// palette definitions, 10 colors each, 5 palettes atm -> will need to adjust if I add more
+
+const PALETTES = { relaxed: ["#476a6f", "#519e8a", "#7eb09b", "#aa6373", "#ecbeb4", "#8fc0a9", "#b3b3f1", "#f5c396", "#982649", "#3a2e39"], tangy: ["#15f449", "#ff221f", "#02393b", "#07eaed", "#ffda1f", "#007bff", "#daff34", "#1d465d", "#e43f6e", "#bd4ca5"], fall: ["#bfd3eb", "#d38c1f", "#b83713", "#b0641b", "#6a3b0a", "#5a9d43", "#e1c6b3", "#b0641b", "#661e02", "#12543b"], neon: ["#ff7578", "#14ffc4", "#0fd3ff", "#0084db", "#7ef500", "#006b14", "#51ff2e", "#ff2b4f", "#5e008a", "#ffeb0f"], psychedelic: ["#af0040", "#0065bd", "#f8ff1e", "#ff68eb", "#15a9ff", "#00c66a", "#f4f400", "#ff5735", "#0074ef", "#005481"], paletteLen: 10, numPalettes: 5 };
+
 function windowResized() {
     resizeCanvas(windowWidth, windowHeight);
     blobs = [];
@@ -14,40 +18,47 @@ function windowResized() {
 
 var canvas; // canvas
 
-var palette; // colors
+var currPalette; // colors
+var currSongTempo;
+var currSongDurationMs;
 
 var fr;
 
 let cpOffsetAngle;
 let drawCp;
 
-// vary these based on song tempo
+// TODO vary these based on song tempo
 let rNoise = 0;
-let rInc = 0.00001;
+let rInc = 0.000004;
 let aNoise = 1;
-let aInc = 0.00001;
+let aInc = 0.000004;
 
 let blobs = [];
 let numBlobs;
 
-let color1;
-let color2;
+var color1;
+var color2;
+
+var bgcolor1;
+var bgcolor2;
 
 let bgNoise = 0;
 let bgInc = 0.005;
+
+let colorsExist = false;
 
 function setup() {
     canvas = createCanvas(windowWidth, windowHeight);
     canvas.position(0, 0);
     canvas.style('z-index', '-1');
-    color1 = color(248, 51, 60);
-    color2 = color(252, 171, 16);
+    // generate placeholder colors for the first song. there's probably a fix for this, but idc
+    initColors();
     generateBlobs();
 }
 
 
 function draw() {
-    background(lerpColor(color1, color2, noise(bgNoise)));
+    background(lerpColor(bgcolor1, bgcolor2, noise(bgNoise)));
     bgNoise += bgInc;
     //stroke(0);
     noStroke();
@@ -60,9 +71,106 @@ function draw() {
     //print(frameRate());
 }
 
+function initColors() {
+
+    let paletteIndex = Math.floor(Math.random() * PALETTES.numPalettes);
+    switch (paletteIndex) {
+        case 0:
+            currPalette = PALETTES.fall;
+            break;
+        case 1:
+            currPalette = PALETTES.neon;
+            break;
+        case 2:
+            currPalette = PALETTES.psychedelic;
+            break;
+        case 3:
+            currPalette = PALETTES.tangy;
+            break;
+        case 4:
+            currPalette = PALETTES.relaxed;
+            break;
+        default:
+            currPalette = PALETTES.psychedelic;
+            break;
+    }
+
+    let index1 = Math.floor(Math.random() * PALETTES.paletteLen);
+    let index2 = Math.floor(Math.random() * PALETTES.paletteLen);
+    // can't have two of the same color
+    while (index2 == index1) {
+        index2 = Math.floor(Math.random() * PALETTES.paletteLen);
+    }
+    // use these colors when generating blobs
+    color1 = color(currPalette[index1]);
+    color2 = color(currPalette[index2]);
+
+    // do background colors, super clunky but works I suppose
+    for (let i = 0; i < PALETTES.paletteLen; i++) {
+        if (i != index1 && i != index2) bgcolor1 = color(currPalette[i]);
+    }
+    for (let i = PALETTES.paletteLen - 1; i >= 0; i--) {
+        if (i != index1 && i != index2) bgcolor2 = color(currPalette[i]);
+    }
+
+    console.debug("Selected palette: ", currPalette);
+
+}
+
+
+function updateSketchColors() {
+    // get spotify song data
+    if (!currentTrack.id) { console.log("no current track"); return; }
+
+    spotify.getAudioFeaturesForTrack(currentTrack.id, (errorObject, data) => {
+        // extract relevant features
+        let acousticness = data.acousticness; // more muted colors
+        let upbeatness = (data.danceability + data.energy) / 2;
+        let valence = data.valence;
+        currSongTempo = data.tempo;
+        currSongDurationMs = data.duration_ms;
+
+        // generate two colors from data
+        // idea: lerp between two colors in the selected pallete
+        // TODO in the future, make this more advanced, maybe between more colors
+        // or pick two colors from palette to lerp between when generating each blob -> next time
+
+        if (acousticness > 0.5) {
+            if (Math.floor(Math.random() * 2) == 0) currPalette = PALETTES.fall;
+            else currPalette = PALETTES.relaxed;
+        } else if (upbeatness > 0.5) {
+            if (valence > 0.3) currPalette = PALETTES.tangy;
+            else currPalette = PALETTES.neon;
+        } else currPalette = PALETTES.psychedelic;
+
+        let index1 = Math.floor(Math.random() * PALETTES.paletteLen);
+        let index2 = Math.floor(Math.random() * PALETTES.paletteLen);
+        // can't have two of the same color
+        while (index2 == index1) index2 = Math.floor(Math.random() * PALETTES.paletteLen);
+
+        // use these colors when generating blobs
+        color1 = color(currPalette[index1]);
+        color2 = color(currPalette[index2]);
+
+        // do background colors, super clunky but works I suppose
+        for (let i = 0; i < PALETTES.paletteLen; i++) {
+            if (i != index1 && i != index2) bgcolor1 = color(currPalette[i]);
+        }
+        for (let i = PALETTES.paletteLen - 1; i >= 0; i--) {
+            if (i != index1 && i != index2) bgcolor2 = color(currPalette[i]);
+        }
+
+        console.debug("Selected palette: ", currPalette);
+
+        // update blobs
+        generateBlobs();
+    });
+
+}
+
 function generateBlobs() {
     // make numBlobs proportional to window area
-    numBlobs = floor(width * height / 50000);
+    numBlobs = floor(width * height / 40000);
 
     for (let i = 0; i < numBlobs; i++) {
         blobs[i] = new Blob(i, color1, color2);
@@ -150,23 +258,6 @@ function getBlob(seed, numPoints, baseRadius, radiusRandomness) {
     }
 
     return blobPoints;
-}
-
-function updateSketchColors() {
-    // get spotify song data
-    if (!currentTrack.id) return;
-
-    spotify.getAudioFeaturesForTrack(currentTrack.id, (errorObject, data) => {
-        // extract relevant features
-        let acousticness = data.acousticness; // more muted colors
-        let upbeatness = (data.danceability + data.energy) / 2;
-        let valence = data.valence;
-        let tempo = data.tempo;
-        let duration_ms = data.duration_ms;
-    });
-    // somehow use it to get/generate a color palette?
-
-    // use these colors when generating blobs
 }
 
 /* Yeah I know javascript isn't object oriented, this is just easier. sue me */
